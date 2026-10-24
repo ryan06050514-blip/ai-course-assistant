@@ -335,7 +335,7 @@ $("ask-form").addEventListener("submit", async e => {
       answer.textContent = "AI 沒有傳回文字，請再試一次。";
     }
   } catch (err) {
-    answer.textContent = "目前無法取得 AI 回答，請確認 AI 服務是否正常。\n" + err.message;
+    answer.textContent = "目前無法連接 AI 服務，請稍後再試。";
   } finally {
     btn.disabled = false;
     btn.textContent = "送出問題 →";
@@ -347,7 +347,7 @@ api("/health").then(h => {
   $("status").textContent =
     `應用程式正常｜模型：${h.model}｜模式：${h.profile}`;
 }).catch(e => {
-  $("status").textContent = "應用程式連線異常：" + e.message;
+  $("status").textContent = "AI 服務目前無法連線，請稍後再試。";
   $("status").classList.add("error");
 });
 
