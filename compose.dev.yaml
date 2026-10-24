@@ -1,0 +1,5 @@
+# 開發用覆寫檔：把 ollama 只開在本機 127.0.0.1，讓主機上的 Lab 程式呼叫
+# 用法：docker compose -f compose.yaml -f compose.dev.yaml up -d
+services:
+  ollama:
+    ports: ["127.0.0.1:11434:11434"]

@@ -1,0 +1,357 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#f4f7fc">
+<title>學習好幫手 AI｜智慧學習助理</title>
+
+<style>
+  :root {
+    --blue: #3568d4;
+    --blue-dark: #244da8;
+    --bg: #f4f7fc;
+    --text: #24324a;
+    --muted: #718096;
+    --border: #e2e8f0;
+    --white: #ffffff;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: "Microsoft JhengHei", system-ui, sans-serif;
+    line-height: 1.7;
+  }
+
+  button, input, textarea { font: inherit; }
+
+  .topbar {
+    background: var(--white);
+    border-bottom: 1px solid var(--border);
+    padding: 16px 24px;
+  }
+
+  .brand {
+    max-width: 1000px;
+    margin: auto;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .logo {
+    width: 44px;
+    height: 44px;
+    display: grid;
+    place-items: center;
+    border-radius: 14px;
+    background: var(--blue);
+    color: white;
+    font-size: 23px;
+    font-weight: bold;
+  }
+
+  .brand h1 { margin: 0; font-size: 20px; }
+  .brand p { margin: 0; color: var(--muted); font-size: 13px; }
+
+  main {
+    max-width: 900px;
+    margin: 32px auto;
+    padding: 0 20px 48px;
+  }
+
+  .hero { margin-bottom: 24px; }
+  .tag {
+    display: inline-block;
+    color: var(--blue);
+    background: #e8efff;
+    border-radius: 999px;
+    padding: 4px 12px;
+    font-size: 13px;
+  }
+
+  .hero h2 { font-size: 30px; margin: 12px 0 4px; }
+  .hero p { margin: 0; color: var(--muted); }
+
+  .card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    padding: 24px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 18px rgba(30, 55, 90, .04);
+  }
+
+  .card h3 { margin: 0 0 6px; font-size: 19px; }
+  .description { color: var(--muted); font-size: 14px; margin: 0 0 18px; }
+
+  .examples {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+
+  .example {
+    border: 1px solid #dce6fb;
+    background: #f6f8ff;
+    color: #3159a7;
+    border-radius: 10px;
+    padding: 8px 12px;
+    cursor: pointer;
+    font-size: 14px;
+  }
+
+  .example:hover { background: #e8efff; }
+
+  textarea, input {
+    width: 100%;
+    border: 1px solid #cfd8e6;
+    border-radius: 12px;
+    padding: 12px 14px;
+    outline: none;
+    background: white;
+    color: var(--text);
+  }
+
+  textarea { min-height: 110px; resize: vertical; }
+  textarea:focus, input:focus {
+    border-color: var(--blue);
+    box-shadow: 0 0 0 3px rgba(53, 104, 212, .12);
+  }
+
+  .actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-top: 14px;
+  }
+
+  .hint { color: var(--muted); font-size: 12px; }
+
+  .primary {
+    border: 0;
+    border-radius: 11px;
+    padding: 11px 20px;
+    background: var(--blue);
+    color: white;
+    cursor: pointer;
+    font-weight: 600;
+  }
+
+  .primary:hover { background: var(--blue-dark); }
+  button:disabled { opacity: .55; cursor: not-allowed; }
+
+  .answer {
+    background: #f7f9fe;
+    border: 1px solid #e0e8f8;
+    border-radius: 12px;
+    padding: 16px;
+    min-height: 70px;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+  }
+
+  .status { color: var(--muted); font-size: 13px; }
+  .status::before { content: "● "; color: #16a36a; }
+  .status.error::before { color: #d64545; }
+
+  .history-item {
+    padding: 12px 14px;
+    margin-top: 10px;
+    background: #f7f9fe;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    overflow-wrap: anywhere;
+  }
+
+  .history-item small { display: block; color: var(--muted); margin-top: 5px; }
+
+  footer {
+    text-align: center;
+    color: var(--muted);
+    font-size: 12px;
+    padding: 20px;
+  }
+
+  @media (max-width: 600px) {
+    .topbar { padding: 14px 16px; }
+    main { margin-top: 22px; padding: 0 14px 32px; }
+    .hero h2 { font-size: 25px; }
+    .card { padding: 18px; }
+    .actions { align-items: stretch; flex-direction: column; }
+    .primary { width: 100%; }
+  }
+</style>
+</head>
+
+<body>
+<header class="topbar">
+  <div class="brand">
+    <div class="logo">學</div>
+    <div>
+      <h1>學習好幫手 AI</h1>
+      <p>StudyMate AI｜你的智慧學習夥伴</p>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section class="hero">
+    <span class="tag">AI 智慧學習平台</span>
+    <h2>今天想學會什麼？</h2>
+    <p>提出課程問題，讓 AI 用簡單易懂的繁體中文陪你理解觀念。</p>
+  </section>
+
+  <section class="card">
+    <h3>📚 AI 課程問答</h3>
+    <p class="description">輸入你不懂的課程內容，AI 會協助你理解。</p>
+
+    <div class="examples">
+      <button class="example" type="button"
+        data-question="請用簡單的繁體中文解釋什麼是資料庫正規化，並舉一個例子。">什麼是資料庫正規化？</button>
+      <button class="example" type="button"
+        data-question="請用初學者聽得懂的方式解釋 Docker，並舉例說明。">Docker 是什麼？</button>
+      <button class="example" type="button"
+        data-question="請解釋 Python 函式是什麼，並提供一個簡單的程式範例。">Python 函式怎麼用？</button>
+    </div>
+
+    <form id="ask-form">
+      <label for="question">你的問題</label>
+      <label for="study-mode">學習模式</label>
+<select id="study-mode">
+  <option value="simple">📘 簡單解釋</option>
+  <option value="example">💡 舉例說明</option>
+  <option value="exam">📝 考前重點</option>
+</select>
+      <textarea id="question" required
+        placeholder="例如：請用簡單的方式解釋什麼是 API……"></textarea>
+      <div class="actions">
+        <span class="hint">請勿輸入密碼或個人敏感資料。</span>
+        <button class="primary" id="ask-btn" type="submit">送出問題 →</button>
+      </div>
+    </form>
+  </section>
+
+  <section class="card">
+    <h3>💡 AI 的回答</h3>
+    <p class="description">回答會顯示在下方，方便閱讀與複習。</p>
+    <div class="answer" id="answer" aria-live="polite">你的回答將顯示在這裡。</div>
+    <p class="status" id="status">正在檢查應用程式狀態……</p>
+  </section>
+
+  <section class="card">
+    <h3>📝 學習紀錄</h3>
+    <p class="description">顯示原有系統保存的最新紀錄。</p>
+    <div id="history"><p class="status">正在讀取紀錄……</p></div>
+  </section>
+</main>
+
+<footer>學習好幫手 AI · 本地 AI 學習專題</footer>
+
+<script>
+const $ = id => document.getElementById(id);
+
+const api = (path, body) => fetch("/api" + path, body ? {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify(body)
+} : {}).then(async r => {
+  if (!r.ok) throw new Error(r.status + " " + await r.text());
+  return r.json();
+});
+
+function esc(s) {
+  return String(s).replace(/[&<>"]/g, c => ({
+    "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;"
+  }[c]));
+}
+
+async function refreshHistory() {
+  try {
+    const rows = await api("/messages");
+    $("history").innerHTML = rows.length
+      ? rows.map(m => `
+          <div class="history-item">
+            <b>${esc(m.author)}</b>：${esc(m.content)}
+            <small>${esc(new Date(m.at).toLocaleString())}</small>
+          </div>`).join("")
+      : "<p>目前還沒有紀錄。</p>";
+  } catch (e) {
+    $("history").textContent = "目前無法讀取紀錄：" + e.message;
+  }
+}
+
+document.querySelectorAll(".example").forEach(button => {
+  button.addEventListener("click", () => {
+    $("question").value = button.dataset.question;
+    $("question").focus();
+  });
+});
+
+$("ask-form").addEventListener("submit", async e => {
+  e.preventDefault();
+
+  const question = $("question").value.trim();
+  if (!question) return;
+
+  const btn = $("ask-btn");
+  const answer = $("answer");
+
+  btn.disabled = true;
+  btn.textContent = "AI 思考中……";
+  answer.textContent = "";
+
+  try {
+    const r = await fetch("/api/ask/stream", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+    question: `[學習模式：${$("study-mode").value}] ${question}`
+})
+    });
+
+    if (!r.ok) throw new Error(r.status + " " + await r.text());
+
+    if (!r.body) throw new Error("瀏覽器無法讀取串流回應。");
+
+    const reader = r.body.getReader();
+    const decoder = new TextDecoder();
+
+    for (;;) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      answer.textContent += decoder.decode(value, { stream: true });
+    }
+
+    answer.textContent += decoder.decode();
+
+    if (!answer.textContent.trim()) {
+      answer.textContent = "AI 沒有傳回文字，請再試一次。";
+    }
+  } catch (err) {
+    answer.textContent = "目前無法取得 AI 回答，請確認 AI 服務是否正常。\n" + err.message;
+  } finally {
+    btn.disabled = false;
+    btn.textContent = "送出問題 →";
+    refreshHistory();
+  }
+});
+
+api("/health").then(h => {
+  $("status").textContent =
+    `應用程式正常｜模型：${h.model}｜模式：${h.profile}`;
+}).catch(e => {
+  $("status").textContent = "應用程式連線異常：" + e.message;
+  $("status").classList.add("error");
+});
+
+refreshHistory();
+</script>
+</body>
+</html>

@@ -1,0 +1,9 @@
+# .dockerignore（放在 repo 根目錄）
+.venv/
+.git/
+__pycache__/
+.env
+tests/
+web/
+db/
+Dockerfile*

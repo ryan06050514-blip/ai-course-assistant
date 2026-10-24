@@ -1,0 +1,7 @@
+# 反面教材：能跑，但又大又慢又不安全
+FROM python:3.12
+WORKDIR /app
+COPY . .
+RUN pip install uv && uv sync
+CMD ["uv", "run", "uvicorn", "agent.api:app", \
+     "--host", "0.0.0.0"]

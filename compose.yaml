@@ -1,0 +1,65 @@
+name: ai-platform
+
+services:
+  web:            # 展示層：唯一對外開埠
+    build: ./web
+    image: ai-platform-web:0.1.0
+    ports: ["8080:80"]
+    depends_on:
+      api:
+        condition: service_healthy
+    networks: [frontend]
+    restart: unless-stopped
+
+  api:            # 應用層：唯一跨三個網路
+    build: .
+    image: ai-platform-api:0.2.0
+    environment:
+      PGHOST: db
+      PGUSER: app
+      PGDATABASE: app
+      PGPASSWORD: ${POSTGRES_PASSWORD:?}
+      LLM_BASE_URL: http://ollama:11434/v1
+      LLM_MODEL: ${LLM_MODEL:-qwen3:0.6b}
+    depends_on:
+      db:
+        condition: service_healthy
+    networks: [frontend, backend, ai]
+    restart: unless-stopped
+
+  db:             # 資料層：不開埠、不能上網
+    image: postgres:18-alpine
+    environment:
+      POSTGRES_USER: app
+      POSTGRES_DB: app
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?}
+    volumes:
+      - pgdata:/var/lib/postgresql
+      - ./db:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "app"]
+      interval: 5s
+      retries: 10
+    networks: [backend]
+    restart: unless-stopped
+
+  ollama:         # AI 服務：模型存在 volume
+    image: ollama/ollama:latest
+    volumes: ["ollama:/root/.ollama"]
+    healthcheck:
+      test: ["CMD", "ollama", "list"]
+      interval: 10s
+      retries: 5
+    networks: [ai]
+    restart: unless-stopped
+
+networks:
+  frontend:
+  backend:
+    internal: true    # 沒有對外路由
+  ai:
+
+volumes:
+  pgdata:
+  ollama:
+    name: ollama      # 沿用課前下載的模型

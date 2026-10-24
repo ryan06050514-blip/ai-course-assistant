@@ -1,0 +1,11 @@
+# Windows + NVIDIA（WSL2）或 Linux + NVIDIA Container Toolkit 才需要
+# 用法：docker compose -f compose.yaml -f compose.gpu.yaml up -d
+services:
+  ollama:
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
