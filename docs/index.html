@@ -1,112 +1,357 @@
-<!DOCTYPE html>
-
+<!doctype html>
 <html lang="zh-Hant">
 <head>
-<meta charset="UTF-8">
+<meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>AI 課程問答助手</title>
+<meta name="theme-color" content="#f4f7fc">
+<title>學習好幫手 AI｜智慧學習助理</title>
+
 <style>
-*{box-sizing:border-box}
-body{margin:0;font-family:"Microsoft JhengHei",Arial,sans-serif;background:#f3f6fc;color:#24324a;line-height:1.7}
-header{background:linear-gradient(135deg,#2457c5,#6388e8);color:#fff;text-align:center;padding:38px 18px}
-header h1{font-size:clamp(27px,5vw,40px);margin:0 0 8px}
-header p{margin:0}
-main{max-width:920px;margin:28px auto;padding:0 16px}
-.card{background:#fff;border:1px solid #e2e8f0;border-radius:18px;padding:24px;margin-bottom:20px;box-shadow:0 5px 22px #23395b0b}
-h2{margin:0 0 14px;color:#2457c5;font-size:23px}
-.muted{color:#718096}
-.mode-list{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0}
-.mode{background:#edf3ff;color:#2457c5;padding:8px 13px;border-radius:10px;font-weight:600}
-label{display:block;font-weight:600;margin:14px 0 8px}
-textarea{width:100%;min-height:105px;padding:14px;border:1px solid #ccd6e5;border-radius:12px;font:inherit;resize:vertical}
-button,.btn{display:inline-block;border:0;border-radius:11px;padding:12px 18px;background:#3568d4;color:white;font:inherit;font-weight:600;text-decoration:none;cursor:pointer}
-button:hover,.btn:hover{background:#244da8}
-.answer{background:#f6f8fd;border:1px solid #dce6fb;padding:16px;border-radius:12px;margin-top:16px}
-.notice{background:#fff5db;border-left:4px solid #e3a008;padding:14px;border-radius:8px}
-code{background:#edf1fa;padding:3px 6px;border-radius:5px;overflow-wrap:anywhere}
-li{margin:5px 0}
-footer{text-align:center;color:#718096;padding:22px}
-@media(max-width:600px){.card{padding:18px}header{padding:30px 14px}}
+  :root {
+    --blue: #3568d4;
+    --blue-dark: #244da8;
+    --bg: #f4f7fc;
+    --text: #24324a;
+    --muted: #718096;
+    --border: #e2e8f0;
+    --white: #ffffff;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: "Microsoft JhengHei", system-ui, sans-serif;
+    line-height: 1.7;
+  }
+
+  button, input, textarea { font: inherit; }
+
+  .topbar {
+    background: var(--white);
+    border-bottom: 1px solid var(--border);
+    padding: 16px 24px;
+  }
+
+  .brand {
+    max-width: 1000px;
+    margin: auto;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .logo {
+    width: 44px;
+    height: 44px;
+    display: grid;
+    place-items: center;
+    border-radius: 14px;
+    background: var(--blue);
+    color: white;
+    font-size: 23px;
+    font-weight: bold;
+  }
+
+  .brand h1 { margin: 0; font-size: 20px; }
+  .brand p { margin: 0; color: var(--muted); font-size: 13px; }
+
+  main {
+    max-width: 900px;
+    margin: 32px auto;
+    padding: 0 20px 48px;
+  }
+
+  .hero { margin-bottom: 24px; }
+  .tag {
+    display: inline-block;
+    color: var(--blue);
+    background: #e8efff;
+    border-radius: 999px;
+    padding: 4px 12px;
+    font-size: 13px;
+  }
+
+  .hero h2 { font-size: 30px; margin: 12px 0 4px; }
+  .hero p { margin: 0; color: var(--muted); }
+
+  .card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    padding: 24px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 18px rgba(30, 55, 90, .04);
+  }
+
+  .card h3 { margin: 0 0 6px; font-size: 19px; }
+  .description { color: var(--muted); font-size: 14px; margin: 0 0 18px; }
+
+  .examples {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+
+  .example {
+    border: 1px solid #dce6fb;
+    background: #f6f8ff;
+    color: #3159a7;
+    border-radius: 10px;
+    padding: 8px 12px;
+    cursor: pointer;
+    font-size: 14px;
+  }
+
+  .example:hover { background: #e8efff; }
+
+  textarea, input {
+    width: 100%;
+    border: 1px solid #cfd8e6;
+    border-radius: 12px;
+    padding: 12px 14px;
+    outline: none;
+    background: white;
+    color: var(--text);
+  }
+
+  textarea { min-height: 110px; resize: vertical; }
+  textarea:focus, input:focus {
+    border-color: var(--blue);
+    box-shadow: 0 0 0 3px rgba(53, 104, 212, .12);
+  }
+
+  .actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-top: 14px;
+  }
+
+  .hint { color: var(--muted); font-size: 12px; }
+
+  .primary {
+    border: 0;
+    border-radius: 11px;
+    padding: 11px 20px;
+    background: var(--blue);
+    color: white;
+    cursor: pointer;
+    font-weight: 600;
+  }
+
+  .primary:hover { background: var(--blue-dark); }
+  button:disabled { opacity: .55; cursor: not-allowed; }
+
+  .answer {
+    background: #f7f9fe;
+    border: 1px solid #e0e8f8;
+    border-radius: 12px;
+    padding: 16px;
+    min-height: 70px;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+  }
+
+  .status { color: var(--muted); font-size: 13px; }
+  .status::before { content: "● "; color: #16a36a; }
+  .status.error::before { color: #d64545; }
+
+  .history-item {
+    padding: 12px 14px;
+    margin-top: 10px;
+    background: #f7f9fe;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    overflow-wrap: anywhere;
+  }
+
+  .history-item small { display: block; color: var(--muted); margin-top: 5px; }
+
+  footer {
+    text-align: center;
+    color: var(--muted);
+    font-size: 12px;
+    padding: 20px;
+  }
+
+  @media (max-width: 600px) {
+    .topbar { padding: 14px 16px; }
+    main { margin-top: 22px; padding: 0 14px 32px; }
+    .hero h2 { font-size: 25px; }
+    .card { padding: 18px; }
+    .actions { align-items: stretch; flex-direction: column; }
+    .primary { width: 100%; }
+  }
 </style>
 </head>
+
 <body>
-<header>
-  <h1>🤖 AI 課程問答助手</h1>
-  <p>把課程問題交給 AI，讓學習與複習更容易</p>
-  <p>個人 AI 迷你專題｜本地大型語言模型應用</p>
-</header>
-<main>
-  <section class="card">
-    <h2>💬 AI 問答操作介面</h2>
-    <p class="muted">以下展示本專題的問答操作方式。請在自己的電腦啟動 AI 服務後，使用真正可以回答問題的本機系統。</p>
-    <div class="mode-list">
-      <span class="mode">概念解說</span>
-      <span class="mode">範例教學</span>
-      <span class="mode">考試重點</span>
+<header class="topbar">
+  <div class="brand">
+    <div class="logo">學</div>
+    <div>
+      <h1>學習好幫手 AI</h1>
+      <p>StudyMate AI｜你的智慧學習夥伴</p>
     </div>
-    <label for="question">你想問什麼課程問題？</label>
-    <textarea id="question" placeholder="例如：請用簡單的方式解釋 Python 的 for 迴圈。"></textarea>
-    <p><button type="button" id="start">如何開始 AI 問答？</button></p>
-    <div class="answer" id="answer" aria-live="polite">💡 AI 回答會在本機問答系統中顯示。這個 GitHub Pages 頁面是公開的專題展示頁，不會假裝已經連上 AI 模型。</div>
-  </section>
+  </div>
+</header>
 
-  <section class="card" id="run">
-    <h2>🚀 啟動真正的 AI 問答</h2>
-    <ol>
-      <li>在電腦安裝並開啟 Docker Desktop。</li>
-      <li>下載或開啟本專案原始碼。</li>
-      <li>依照 <code>.env.example</code> 和 README 說明準備環境設定。</li>
-      <li>在專案根目錄開啟終端機，執行 <code>docker compose up --build</code>。</li>
-      <li>等待服務啟動，再開啟下方本機網址。</li>
-    </ol>
-    <p><a class="btn" href="http://localhost:8080">開啟本機 AI 問答系統 ↗</a></p>
-    <p class="notice">注意：本機網址只有在你的電腦已啟動專案時才有效。其他人開啟 GitHub Pages 時，不會連到你的電腦或本地 Ollama 模型。</p>
+<main>
+  <section class="hero">
+    <span class="tag">AI 智慧學習平台</span>
+    <h2>今天想學會什麼？</h2>
+    <p>提出課程問題，讓 AI 用簡單易懂的繁體中文陪你理解觀念。</p>
   </section>
 
   <section class="card">
-    <h2>📚 專題介紹</h2>
-    <p>本專題是一個 AI 課程問答助手，協助使用者理解 Python、人工智慧與程式設計相關概念。使用者以自然語言提出問題，由大型語言模型產生回答，作為學習與複習的輔助工具。</p>
-    <p>專案使用 Python 建立後端 API，以網頁提供操作介面，並透過 Docker Compose 管理應用程式及本地模型服務。</p>
+    <h3>📚 AI 課程問答</h3>
+    <p class="description">輸入你不懂的課程內容，AI 會協助你理解。</p>
+
+    <div class="examples">
+      <button class="example" type="button"
+        data-question="請用簡單的繁體中文解釋什麼是資料庫正規化，並舉一個例子。">什麼是資料庫正規化？</button>
+      <button class="example" type="button"
+        data-question="請用初學者聽得懂的方式解釋 Docker，並舉例說明。">Docker 是什麼？</button>
+      <button class="example" type="button"
+        data-question="請解釋 Python 函式是什麼，並提供一個簡單的程式範例。">Python 函式怎麼用？</button>
+    </div>
+
+    <form id="ask-form">
+      <label for="question">你的問題</label>
+      <label for="study-mode">學習模式</label>
+<select id="study-mode">
+  <option value="simple">📘 簡單解釋</option>
+  <option value="example">💡 舉例說明</option>
+  <option value="exam">📝 考前重點</option>
+</select>
+      <textarea id="question" required
+        placeholder="例如：請用簡單的方式解釋什麼是 API……"></textarea>
+      <div class="actions">
+        <span class="hint">請勿輸入密碼或個人敏感資料。</span>
+        <button class="primary" id="ask-btn" type="submit">送出問題 →</button>
+      </div>
+    </form>
   </section>
 
   <section class="card">
-    <h2>✨ 主要功能與技術</h2>
-    <ul>
-      <li>自然語言課程提問。</li>
-      <li>使用本地 Ollama 模型產生回答。</li>
-      <li>串流回應，讓回答逐步顯示。</li>
-      <li>不同學習模式：概念解說、範例教學與考試重點。</li>
-      <li>技術：Python、HTML、CSS、JavaScript、Docker Compose、Ollama、GitHub Actions。</li>
-    </ul>
+    <h3>💡 AI 的回答</h3>
+    <p class="description">回答會顯示在下方，方便閱讀與複習。</p>
+    <div class="answer" id="answer" aria-live="polite">你的回答將顯示在這裡。</div>
+    <p class="status" id="status">正在檢查應用程式狀態……</p>
   </section>
 
   <section class="card">
-    <h2>🧪 測試成果</h2>
-    <ul>
-      <li>已在本機透過 Docker Compose 啟動服務。</li>
-      <li>已確認本機 <code>http://localhost:8080</code> 可以正常取得 AI 回答。</li>
-      <li>已設定 GitHub Actions 部署此靜態專題展示頁。</li>
-    </ul>
-    <p class="muted">本頁為專題說明用途；實際 AI 回答功能請在本機啟動後測試。</p>
-  </section>
-
-  <section class="card">
-    <h2>🛠️ AI 工具使用說明</h2>
-    <p>開發過程中使用 ChatGPT 協助理解程式架構、調整提示詞、規劃學習模式、排查前後端 API 連線問題，以及整理專題文件。</p>
-    <p>開發者自行整合及修改程式，並在本機啟動 Docker 服務、測試問答流程和檢查部署結果。AI 提供的建議會經過實際測試與確認。</p>
-  </section>
-
-  <section class="card">
-    <h2>🔗 專案原始碼</h2>
-    <p><a href="https://github.com/ryan06050514-blip/ai-course-assistant">在 GitHub 查看完整原始碼</a></p>
+    <h3>📝 學習紀錄</h3>
+    <p class="description">顯示原有系統保存的最新紀錄。</p>
+    <div id="history"><p class="status">正在讀取紀錄……</p></div>
   </section>
 </main>
-<footer>AI 課程問答助手｜個人 AI 迷你專題</footer>
+
+<footer>學習好幫手 AI · 本地 AI 學習專題</footer>
+
 <script>
-document.getElementById("start").addEventListener("click",function(){
-  document.getElementById("answer").textContent="請先在自己的電腦啟動 Docker Desktop 與本專案，再點選「開啟本機 AI 問答系統」。GitHub Pages 是靜態展示頁，無法直接呼叫你電腦中的 Ollama。";
-  document.getElementById("run").scrollIntoView({behavior:"smooth"});
+const $ = id => document.getElementById(id);
+
+const api = (path, body) => fetch("/api" + path, body ? {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify(body)
+} : {}).then(async r => {
+  if (!r.ok) throw new Error(r.status + " " + await r.text());
+  return r.json();
 });
+
+function esc(s) {
+  return String(s).replace(/[&<>"]/g, c => ({
+    "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;"
+  }[c]));
+}
+
+async function refreshHistory() {
+  try {
+    const rows = await api("/messages");
+    $("history").innerHTML = rows.length
+      ? rows.map(m => `
+          <div class="history-item">
+            <b>${esc(m.author)}</b>：${esc(m.content)}
+            <small>${esc(new Date(m.at).toLocaleString())}</small>
+          </div>`).join("")
+      : "<p>目前還沒有紀錄。</p>";
+  } catch (e) {
+    $("history").textContent = "目前無法讀取紀錄：" + e.message;
+  }
+}
+
+document.querySelectorAll(".example").forEach(button => {
+  button.addEventListener("click", () => {
+    $("question").value = button.dataset.question;
+    $("question").focus();
+  });
+});
+
+$("ask-form").addEventListener("submit", async e => {
+  e.preventDefault();
+
+  const question = $("question").value.trim();
+  if (!question) return;
+
+  const btn = $("ask-btn");
+  const answer = $("answer");
+
+  btn.disabled = true;
+  btn.textContent = "AI 思考中……";
+  answer.textContent = "";
+
+  try {
+    const r = await fetch("/api/ask/stream", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+    question: `[學習模式：${$("study-mode").value}] ${question}`
+})
+    });
+
+    if (!r.ok) throw new Error(r.status + " " + await r.text());
+
+    if (!r.body) throw new Error("瀏覽器無法讀取串流回應。");
+
+    const reader = r.body.getReader();
+    const decoder = new TextDecoder();
+
+    for (;;) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      answer.textContent += decoder.decode(value, { stream: true });
+    }
+
+    answer.textContent += decoder.decode();
+
+    if (!answer.textContent.trim()) {
+      answer.textContent = "AI 沒有傳回文字，請再試一次。";
+    }
+  } catch (err) {
+    answer.textContent = "目前無法取得 AI 回答，請確認 AI 服務是否正常。\n" + err.message;
+  } finally {
+    btn.disabled = false;
+    btn.textContent = "送出問題 →";
+    refreshHistory();
+  }
+});
+
+api("/health").then(h => {
+  $("status").textContent =
+    `應用程式正常｜模型：${h.model}｜模式：${h.profile}`;
+}).catch(e => {
+  $("status").textContent = "應用程式連線異常：" + e.message;
+  $("status").classList.add("error");
+});
+
+refreshHistory();
 </script>
 </body>
 </html>
