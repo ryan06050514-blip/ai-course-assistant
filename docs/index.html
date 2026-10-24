@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AI 課程問答助手｜專題展示</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Microsoft JhengHei", Arial, sans-serif;
+      background: #f3f6fc;
+      color: #24324a;
+      line-height: 1.8;
+    }
+    header {
+      background: linear-gradient(135deg, #2457c5, #6388e8);
+      color: white;
+      padding: 52px 20px;
+      text-align: center;
+    }
+    header h1 { margin: 0 0 12px; font-size: 32px; }
+    header p { margin: 0; }
+    main { max-width: 900px; margin: 28px auto; padding: 0 18px; }
+    section {
+      background: white;
+      padding: 24px;
+      margin-bottom: 20px;
+      border-radius: 16px;
+      box-shadow: 0 4px 18px #1b376010;
+    }
+    h2 { color: #2457c5; margin-top: 0; }
+    code {
+      background: #edf1fa;
+      padding: 3px 7px;
+      border-radius: 5px;
+    }
+    .notice {
+      background: #fff5db;
+      padding: 14px;
+      border-radius: 10px;
+    }
+    a { color: #2457c5; }
+    footer { text-align: center; padding: 25px; color: #718096; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>AI 課程問答助手</h1>
+    <p>結合大型語言模型的本地 AI 學習工具</p>
+    <p>個人 AI 迷你專題｜GitHub Pages 展示</p>
+  </header>
+
+  <main>
+    <section>
+      <h2>一、專題介紹</h2>
+      <p>本專題製作一個 AI 課程問答助手，協助使用者理解 Python、人工智慧與程式設計相關概念。使用者輸入問題後，由大型語言模型產生回答，作為學習與複習的輔助工具。</p>
+      <p>專案使用 Python 建立後端服務，透過 Docker Compose 管理應用程式、資料庫與本地模型服務，並提供網頁操作介面。</p>
+    </section>
+
+<section>
+  <h2>二、主要功能</h2>
+  <ul>
+    <li>以自然語言輸入課程問題。</li>
+    <li>使用本地 Ollama 模型產生 AI 回答。</li>
+    <li>支援串流回應，讓回答逐步顯示。</li>
+    <li>提供不同學習模式，協助理解概念、閱讀範例與整理考試重點。</li>
+    <li>提供網頁介面，方便提問與複習。</li>
+  </ul>
+</section>
+
+<section>
+  <h2>三、如何在本機執行</h2>
+  <ol>
+    <li>安裝 Docker Desktop，並確認 Docker 正常啟動。</li>
+    <li>將 GitHub 專案下載或複製到電腦。</li>
+    <li>依照專案的 <code>README.md</code> 與 <code>.env.example</code> 設定必要環境變數。</li>
+    <li>在專案根目錄開啟終端機，執行 <code>docker compose up --build</code>。</li>
+    <li>等待服務啟動後，使用瀏覽器開啟 <code>http://localhost:8080</code>。</li>
+  </ol>
+  <p>首次啟動可能需要下載模型與相關映像檔，請預留足夠的磁碟空間與記憶體。</p>
+  <p><a href="https://github.com/ryan06050514-blip/ai-course-assistant">前往 GitHub 專案原始碼</a></p>
+</section>
+
+<section>
+  <h2>四、成果與測試</h2>
+  <ul>
+    <li>已建立 AI 課程問答網頁。</li>
+    <li>已在本機透過 Docker Compose 啟動服務。</li>
+    <li>已確認本機 <code>localhost:8080</code> 可以正常取得 AI 回答。</li>
+    <li>已設定 GitHub Actions 自動部署本展示頁至 GitHub Pages。</li>
+  </ul>
+  <p class="notice">注意：此 GitHub Pages 網頁是專題展示頁。AI 問答功能需要本機或另外部署的後端 API 與模型服務，因此不能直接在此靜態頁面使用。</p>
+</section>
+
+<section>
+  <h2>五、AI 工具使用說明</h2>
+  <p>開發過程中使用 ChatGPT 協助理解程式架構、調整系統提示詞、規劃前端學習模式、排查網頁與 API 連線問題，以及整理專題說明。</p>
+  <p>開發者自行修改與整合前後端程式，並在本機啟動 Docker 服務、測試提問流程及檢查 GitHub Actions 部署結果。AI 產生的建議仍須經過實際測試與確認。</p>
+</section>
+
+<section>
+  <h2>六、技術與學習心得</h2>
+  <p>本專題整合 Python、HTTP API、HTML、CSS、JavaScript、Docker Compose、Ollama、GitHub 與 GitHub Actions。開發過程讓我練習前後端串接、本地大型語言模型應用、版本控制與自動化部署。</p>
+</section>
+
+  </main>
+
+  <footer>AI 課程問答助手｜個人 AI 迷你專題</footer>
+</body>
+</html>
