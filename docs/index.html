@@ -224,11 +224,19 @@
     <form id="ask-form">
       <label for="question">你的問題</label>
       <label for="study-mode">學習模式</label>
+<<<<<<< HEAD
 <select id="study-mode">
   <option value="simple">📘 簡單解釋</option>
   <option value="example">💡 舉例說明</option>
   <option value="exam">📝 考前重點</option>
 </select>
+=======
+      <select id="study-mode">
+        <option value="simple">📘 簡單解釋</option>
+        <option value="example">💡 舉例說明</option>
+        <option value="exam">📝 考前重點</option>
+      </select>
+>>>>>>> 13039ac (update backend and main)
       <textarea id="question" required
         placeholder="例如：請用簡單的方式解釋什麼是 API……"></textarea>
       <div class="actions">
@@ -283,7 +291,11 @@ async function refreshHistory() {
           </div>`).join("")
       : "<p>目前還沒有紀錄。</p>";
   } catch (e) {
+<<<<<<< HEAD
     $("history").textContent = "目前無法讀取紀錄：" + e.message;
+=======
+    $("history").textContent = "目前無法讀取學習紀錄，請確認 AI 服務是否連線。";
+>>>>>>> 13039ac (update backend and main)
   }
 }
 
@@ -308,6 +320,7 @@ $("ask-form").addEventListener("submit", async e => {
   answer.textContent = "";
 
   try {
+<<<<<<< HEAD
     const r = await fetch("/api/ask/stream", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -318,6 +331,17 @@ $("ask-form").addEventListener("submit", async e => {
 
     if (!r.ok) throw new Error(r.status + " " + await r.text());
 
+=======
+    const r = await fetch(BACKEND_URL + "/api/ask/stream", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        question: `[學習模式：${$("study-mode").value}] ${question}`
+      })
+    });
+
+    if (!r.ok) throw new Error(r.status + " " + await r.text());
+>>>>>>> 13039ac (update backend and main)
     if (!r.body) throw new Error("瀏覽器無法讀取串流回應。");
 
     const reader = r.body.getReader();
@@ -335,7 +359,11 @@ $("ask-form").addEventListener("submit", async e => {
       answer.textContent = "AI 沒有傳回文字，請再試一次。";
     }
   } catch (err) {
+<<<<<<< HEAD
     answer.textContent = "目前無法連接 AI 服務，請稍後再試。";
+=======
+    answer.textContent = "目前無法取得 AI 回答，請確認 AI 服務是否正常。\n" + err.message;
+>>>>>>> 13039ac (update backend and main)
   } finally {
     btn.disabled = false;
     btn.textContent = "送出問題 →";
@@ -343,6 +371,7 @@ $("ask-form").addEventListener("submit", async e => {
   }
 });
 
+<<<<<<< HEAD
 api("/health").then(h => {
   $("status").textContent =
     `應用程式正常｜模型：${h.model}｜模式：${h.profile}`;
@@ -355,3 +384,17 @@ refreshHistory();
 </script>
 </body>
 </html>
+=======
+// 🎬 初始化：檢查後端 API 連線狀態
+api("/health").then(h => {
+  $("status").textContent = "系統連線正常 (模型: " + h.model + ")";
+  $("status").className = "status";
+  refreshHistory();
+}).catch(err => {
+  $("status").textContent = "應用程式連線異常，請確認後端伺服器已啟動。";
+  $("status").className = "status error";
+});
+</script>
+</body>
+</html>
+>>>>>>> 13039ac (update backend and main)
