@@ -36,8 +36,8 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          # Upload entire repository
-          path: ./docs
+          # 修改這裡，指向存放 index.html 的 web 資料夾
+          path: ./web
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v5
