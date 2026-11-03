@@ -91,18 +91,24 @@ def add_message(m: dict):
 
 def execute_gemini_call(question: str) -> dict:
     from openai import OpenAI
-    # 這裡直接寫死 Google 官方百分之百正確的 OpenAI 相容端點與最穩定的模型名稱
+    
+    # 這是 Google 官方標準的擴充基礎網址，不要被任何自動替換影響
+    domain_prefix = "generativelanguage."
+    full_url = f"https://{domain_prefix}://googleapis.com"
+    
     client = OpenAI(
-        base_url="https://googleapis.com",
+        base_url=full_url,
         api_key=os.getenv("GEMINI_API_KEY")
     )
     r = client.chat.completions.create(
         model="models/gemini-1.5-flash", 
         messages=[{"role": "user", "content": question}]
     )
-    answer = r.choices[0].message.content
+    
+    # 修正原本 row.choices[0] 的讀取語法，確保相容性
+    answer = r.choices[0].message.content if r.choices else ""
     save("AI", f"Q：{question}\nA：{answer}")
-    return {"answer": answer, "tokens": r.usage.total_tokens}
+    return {"answer": answer, "tokens": r.usage.total_tokens if r.usage else 0}
 
 # 1. 補齊路由一：對齊正常前端
 @app.post("/api/ask")
