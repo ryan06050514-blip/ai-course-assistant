@@ -218,17 +218,17 @@
       <button class="example" type="button"
         data-question="請用初學者聽得懂的方式解釋 Docker，並舉例說明。">Docker 是什麼？</button>
       <button class="example" type="button"
-        data-question="請歷史解釋 Python 函式是什麼，並提供一個簡單的程式範例。">Python 函式怎麼用？</button>
+        data-question="請解釋 Python 函式是什麼，並提供一個簡單的程式範例。">Python 函式怎麼用？</button>
     </div>
 
     <form id="ask-form">
       <label for="question">你的問題</label>
       <label for="study-mode">學習模式</label>
-      <select id="study-mode">
-        <option value="simple">📘 簡單解釋</option>
-        <option value="example">💡 舉例說明</option>
-        <option value="exam">📝 考前重點</option>
-      </select>
+<select id="study-mode">
+  <option value="simple">📘 簡單解釋</option>
+  <option value="example">💡 舉例說明</option>
+  <option value="exam">📝 考前重點</option>
+</select>
       <textarea id="question" required
         placeholder="例如：請用簡單的方式解釋什麼是 API……"></textarea>
       <div class="actions">
@@ -257,10 +257,7 @@
 <script>
 const $ = id => document.getElementById(id);
 
-// 🔗 後端伺服器網址：如果是本機測試請維持 "http://127.0.0.1:8000"
-// 如果是要全線上運作交作業，請換成 Render 平台給您的 https://... 雲端網址
-const BACKEND_URL = "http://127.0.0.1:8000";
-
+const BACKEND_URL = "https://ai-course-assistant-mvd5.onrender.com";
 const api = (path, body) => fetch(BACKEND_URL + "/api" + path, body ? {
   method: "POST",
   headers: { "Content-Type": "application/json" },
@@ -287,7 +284,7 @@ async function refreshHistory() {
           </div>`).join("")
       : "<p>目前還沒有紀錄。</p>";
   } catch (e) {
-    $("history").textContent = "目前無法讀取學習紀錄，請確認 AI 服務是否連線。";
+    $("history").textContent = "目前無法讀取紀錄：" + e.message;
   }
 }
 
@@ -316,11 +313,12 @@ $("ask-form").addEventListener("submit", async e => {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        question: `[學習模式：${$("study-mode").value}] ${question}`
-      })
+    question: `[學習模式：${$("study-mode").value}] ${question}`
+})
     });
 
     if (!r.ok) throw new Error(r.status + " " + await r.text());
+
     if (!r.body) throw new Error("瀏覽器無法讀取串流回應。");
 
     const reader = r.body.getReader();
@@ -346,15 +344,15 @@ $("ask-form").addEventListener("submit", async e => {
   }
 });
 
-// 初始化健康檢查
 api("/health").then(h => {
-  $("status").textContent = "系統連線正常 (模型: " + h.model + ")";
-  $("status").className = "status";
-  refreshHistory();
-}).catch(err => {
-  $("status").textContent = "應用程式連線異常，請確認後端伺服器已啟動。";
-  $("status").className = "status error";
+  $("status").textContent =
+    `應用程式正常｜模型：${h.model}｜模式：${h.profile}`;
+}).catch(e => {
+  $("status").textContent = "應用程式連線異常：" + e.message;
+  $("status").classList.add("error");
 });
+
+refreshHistory();
 </script>
 </body>
 </html>
