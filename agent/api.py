@@ -43,7 +43,7 @@ def list_messages():
     return []
 
 @app.post("/messages", status_code=201)
-def add_message(m: MessageIn):
+def add_message(m: dict):
     return {"ok": True}
 
 @app.post("/ask")
