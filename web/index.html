@@ -257,7 +257,8 @@
 <script>
 const $ = id => document.getElementById(id);
 
-const api = (path, body) => fetch("/api" + path, body ? {
+const BACKEND_URL = window.location.hostname.includes("github.io") ? "https://ai-course-assistant-mvd5.onrender.com" : "";
+const api = (path, body) => fetch(BACKEND_URL + "/api" + path, body ? {
   method: "POST",
   headers: { "Content-Type": "application/json" },
   body: JSON.stringify(body)
@@ -308,7 +309,7 @@ $("ask-form").addEventListener("submit", async e => {
   answer.textContent = "";
 
   try {
-    const r = await fetch("/api/ask/stream", {
+    const r = await fetch(BACKEND_URL + "/api/ask/stream", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
