@@ -38,15 +38,15 @@ def health():
     return {"status": "ok", "profile": llm.profile, "model": llm.model}
 
 
-@app.get("/messages")
+@app.get("/api/messages")
 def list_messages():
     return []
 
-@app.post("/messages", status_code=201)
+@app.post("/api/messages", status_code=201)
 def add_message(m: dict):
     return {"ok": True}
 
-@app.post("/ask")
+@app.post("/api/ask")
 def ask(q: AskIn):
     msgs = [{"role": "user", "content": q.question}]
     try:
@@ -57,7 +57,7 @@ def ask(q: AskIn):
     save("AI", f"Q：{q.question}\nA：{answer}")
     return {"answer": answer, "tokens": r.usage.total_tokens}
 
-@app.post("/ask/stream")
+@app.post("/api/ask/stream")
 def ask_stream(q: AskIn):
     """第 6 週選做：串流回答，網頁可以邊產生邊顯示。"""
     def gen():
