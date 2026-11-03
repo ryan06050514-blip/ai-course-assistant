@@ -257,7 +257,7 @@
 <script>
 const $ = id => document.getElementById(id);
 
-const BACKEND_URL = window.location.hostname.includes("github.io") ? "https://ai-course-assistant-mvd5.onrender.com" : "";
+const BACKEND_URL = "https://ai-course-assistant-mvd5.onrender.com";
 const api = (path, body) => fetch(BACKEND_URL + "/api" + path, body ? {
   method: "POST",
   headers: { "Content-Type": "application/json" },
