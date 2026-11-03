@@ -73,17 +73,27 @@ def add_message(m: dict):
 def ask(q: AskIn):
     msgs = [{"role": "user", "content": q.question}]
     try:
-        # 呼叫雲端模型
-        r = llm.client.chat.completions.create(model=llm.model, messages=msgs)
+        # 💡 終極修復：如果目前使用的是 gemini 模式，我們強制在呼叫時指定精準的官方相容網址與模型名稱
+        if "gemini" in getattr(llm, "profile", "").lower() or os.getenv("LLM_PROFILE") == "gemini":
+            llm.client.base_url = "https://googleapis.com"
+            target_model = "models/gemini-1.5-flash"
+        else:
+            target_model = llm.model
+
+        # 呼叫模型
+        r = llm.client.chat.completions.create(
+            model=target_model, 
+            messages=msgs
+        )
+        
         answer = r.choices[0].message.content
         save("AI", f"Q：{q.question}\nA：{answer}")
         return {"answer": answer, "tokens": r.usage.total_tokens}
+        
     except APIConnectionError:
         raise HTTPException(503, "AI 服務連線失敗（Gemini/Ollama）")
     except Exception as e:
-        # 💡 精準修復：把真實錯誤傳回前端（例如：API Key 錯誤或沒帶入），不要讓它直接崩潰噴 Failed to fetch
-        raise HTTPException(500, f"後端模型呼叫失敗，請檢查雲端環境變數設定。詳細錯誤：{str(e)}")
-
+        raise HTTPException(500, f"後端模型呼叫失敗，詳細錯誤：{str(e)}")
 @app.post("/api/ask/stream")
 def ask_stream(q: AskIn):
     def gen():
