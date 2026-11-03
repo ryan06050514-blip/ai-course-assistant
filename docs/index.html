@@ -313,28 +313,16 @@ $("ask-form").addEventListener("submit", async e => {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-    question: `[學習模式：${$("study-mode").value}] ${question}`
-})
+        question: `[學習模式：${$("study-mode").value}] ${question}`
+      })
     });
 
     if (!r.ok) throw new Error(r.status + " " + await r.text());
 
-    if (!r.body) throw new Error("瀏覽器無法讀取串流回應。");
+    // 💡 直接讀取並顯示 JSON 回應，最穩定、絕對不漏字！
+    const data = await r.json();
+    answer.textContent = data.answer || "AI 沒有傳回文字，請再試一次。";
 
-    const reader = r.body.getReader();
-    const decoder = new TextDecoder();
-
-    for (;;) {
-      const { done, value } = await reader.read();
-      if (done) break;
-      answer.textContent += decoder.decode(value, { stream: true });
-    }
-
-    answer.textContent += decoder.decode();
-
-    if (!answer.textContent.trim()) {
-      answer.textContent = "AI 沒有傳回文字，請再試一次。";
-    }
   } catch (err) {
     answer.textContent = "目前無法取得 AI 回答，請確認 AI 服務是否正常。\n" + err.message;
   } finally {
@@ -345,10 +333,9 @@ $("ask-form").addEventListener("submit", async e => {
 });
 
 fetch(BACKEND_URL + "/health").then(res => res.json()).then(h => {
-  $("status").textContent =
-    `應用程式正常｜模型：${h.model}｜模式：${h.profile}`;
+  $("status").textContent = `· 應用程式正常 | 模型：${h.model} | 模式：${h.profile}`;
 }).catch(e => {
-  $("status").textContent = "應用程式連線異常：" + e.message;
+  $("status").textContent = "· 應用程式連線異常：" + e.message;
   $("status").classList.add("error");
 });
 
