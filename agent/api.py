@@ -73,12 +73,16 @@ def add_message(m: dict):
 def ask(q: AskIn):
     msgs = [{"role": "user", "content": q.question}]
     try:
+        # 呼叫雲端模型
         r = llm.client.chat.completions.create(model=llm.model, messages=msgs)
+        answer = r.choices[0].message.content
+        save("AI", f"Q：{q.question}\nA：{answer}")
+        return {"answer": answer, "tokens": r.usage.total_tokens}
     except APIConnectionError:
-        raise HTTPException(503, "AI 服務還沒啟動（ollama）")
-    answer = r.choices[0].message.content
-    save("AI", f"Q：{q.question}\nA：{answer}")
-    return {"answer": answer, "tokens": r.usage.total_tokens}
+        raise HTTPException(503, "AI 服務連線失敗（Gemini/Ollama）")
+    except Exception as e:
+        # 💡 精準修復：把真實錯誤傳回前端（例如：API Key 錯誤或沒帶入），不要讓它直接崩潰噴 Failed to fetch
+        raise HTTPException(500, f"後端模型呼叫失敗，請檢查雲端環境變數設定。詳細錯誤：{str(e)}")
 
 @app.post("/api/ask/stream")
 def ask_stream(q: AskIn):
