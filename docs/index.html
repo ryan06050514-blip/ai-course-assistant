@@ -309,7 +309,7 @@ $("ask-form").addEventListener("submit", async e => {
   answer.textContent = "";
 
   try {
-    const r = await fetch(BACKEND_URL + "/api/ask/stream", {
+    const r = await fetch(BACKEND_URL + "/api/ask", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
