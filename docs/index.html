@@ -258,7 +258,7 @@
 const $ = id => document.getElementById(id);
 
 const BACKEND_URL = "https://ai-course-assistant-mvd5.onrender.com";
-const api = (path, body) => fetch(BACKEND_URL + "/api" + path, body ? {
+const api = (path, body) => fetch(BACKEND_URL + "" + path, body ? {
   method: "POST",
   headers: { "Content-Type": "application/json" },
   body: JSON.stringify(body)
