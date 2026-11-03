@@ -24,7 +24,15 @@ def save(author: str, content: str) -> None:
         conn.execute(sql, (author, content))
 
 app = FastAPI(title="ai-platform-api")
+from fastapi.middleware.cors import CORSMiddleware
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 @app.get("/health")
 def health():
     return {"status": "ok", "profile": llm.profile, "model": llm.model}
