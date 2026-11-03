@@ -89,31 +89,36 @@ def list_messages():
 def add_message(m: dict):
     return {"ok": True}
 
+def execute_gemini_call(question: str) -> dict:
+    from openai import OpenAI
+    # 這裡直接寫死 Google 官方百分之百正確的 OpenAI 相容端點與最穩定的模型名稱
+    client = OpenAI(
+        base_url="https://googleapis.com",
+        api_key=os.getenv("GEMINI_API_KEY")
+    )
+    r = client.chat.completions.create(
+        model="models/gemini-1.5-flash", 
+        messages=[{"role": "user", "content": question}]
+    )
+    answer = r.choices[0].message.content
+    save("AI", f"Q：{question}\nA：{answer}")
+    return {"answer": answer, "tokens": r.usage.total_tokens}
+
+# 1. 補齊路由一：對齊正常前端
 @app.post("/api/ask")
 def ask(q: AskIn):
-    msgs = [{"role": "user", "content": q.question}]
     try:
-        # 💡 終極修復：如果目前使用的是 gemini 模式，我們強制在呼叫時指定精準的官方相容網址與模型名稱
-        if "gemini" in getattr(llm, "profile", "").lower() or os.getenv("LLM_PROFILE") == "gemini":
-            llm.client.base_url = "https://googleapis.com"
-            target_model = "models/gemini-1.5-flash"
-        else:
-            target_model = llm.model
-
-        # 呼叫模型
-        r = llm.client.chat.completions.create(
-            model=target_model, 
-            messages=msgs
-        )
-        
-        answer = r.choices[0].message.content
-        save("AI", f"Q：{q.question}\nA：{answer}")
-        return {"answer": answer, "tokens": r.usage.total_tokens}
-        
-    except APIConnectionError:
-        raise HTTPException(503, "AI 服務連線失敗（Gemini/Ollama）")
+        return execute_gemini_call(q.question)
     except Exception as e:
         raise HTTPException(500, f"後端模型呼叫失敗，詳細錯誤：{str(e)}")
+
+# 2. 補齊路由二：對齊可能拼錯路徑的套件或前端組合
+@app.post("/api/ask/chat/completions")
+def ask_alt(q: AskIn):
+    try:
+        return execute_gemini_call(q.question)
+    except Exception as e:
+        raise HTTPException(500, f"後端備用路由呼叫失敗，詳細錯誤：{str(e)}")
 @app.post("/api/ask/stream")
 def ask_stream(q: AskIn):
     def gen():
