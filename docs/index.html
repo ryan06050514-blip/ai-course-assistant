@@ -344,7 +344,7 @@ $("ask-form").addEventListener("submit", async e => {
   }
 });
 
-api("/health").then(h => {
+fetch(BACKEND_URL + "/health").then(res => res.json()).then(h => {
   $("status").textContent =
     `應用程式正常｜模型：${h.model}｜模式：${h.profile}`;
 }).catch(e => {
