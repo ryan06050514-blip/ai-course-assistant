@@ -35,8 +35,28 @@ app.add_middleware(
 
 # 💡 1. 補上根路徑，防止直接打開網址時看到 404 Not Found
 @app.get("/")
-def index():
-    return {"message": "AI Course Assistant API 後端運作中！請透過前端網頁進行連線。"}
+def read_index():
+    # 1. 先猜測幾個最常見的標準路徑
+    possible_paths = [
+        os.path.join(os.getcwd(), "web", "index.html"),
+        os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "web", "index.html")),
+        "/app/web/index.html",
+        "/web/index.html"
+    ]
+    
+    for path in possible_paths:
+        if os.path.exists(path):
+            return FileResponse(path)
+            
+    # 2. 如果上面都找不到，直接啟動全域搜尋（一網打盡）
+    for root, dirs, files in os.walk("/"):
+        if "index.html" in files:
+            target_path = os.path.join(root, "index.html")
+            # 確保找到的是我們專案的網頁，而不是 nginx 或其他的預設頁
+            if "web" in target_path or "share" not in target_path:
+                return FileResponse(target_path)
+                
+    return {"message": f"後端服務正常，但系統在容器內完全找不到 index.html，目前工作目錄為: {os.getcwd()}"}
 
 # 💡 2. 健康檢查路徑（對齊前端 fetch(BACKEND_URL + "/health")）
 @app.get("/health")
