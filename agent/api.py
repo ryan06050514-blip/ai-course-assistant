@@ -37,16 +37,13 @@ app.add_middleware(
 def health():
     return {"status": "ok", "profile": llm.profile, "model": llm.model}
 
+
 @app.get("/messages")
 def list_messages():
-    sql = "SELECT author, content, created_at FROM messages ORDER BY id DESC LIMIT 20"
-    with psycopg.connect(DB_URL) as conn:
-        rows = conn.execute(sql).fetchall()
-    return [{"author": a, "content": c, "at": t.isoformat()} for a, c, t in rows]
+    return []
 
 @app.post("/messages", status_code=201)
 def add_message(m: MessageIn):
-    save(m.author, m.content)
     return {"ok": True}
 
 @app.post("/ask")
