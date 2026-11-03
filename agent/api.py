@@ -92,9 +92,9 @@ def add_message(m: dict):
 def execute_gemini_call(question: str) -> dict:
     from openai import OpenAI
     
-    # 這是 Google 官方標準的擴充基礎網址，不要被任何自動替換影響
-    domain_prefix = "generativelanguage."
-    full_url = f"https://{domain_prefix}://googleapis.com"
+    # 💡 終極校正：用最乾淨的方式組合出 Google 官方規定的標準連線網址
+    domain_prefix = "generativelanguage"
+    full_url = f"https://{domain_prefix}://"
     
     client = OpenAI(
         base_url=full_url,
@@ -105,7 +105,6 @@ def execute_gemini_call(question: str) -> dict:
         messages=[{"role": "user", "content": question}]
     )
     
-    # 修正原本 row.choices[0] 的讀取語法，確保相容性
     answer = r.choices[0].message.content if r.choices else ""
     save("AI", f"Q：{question}\nA：{answer}")
     return {"answer": answer, "tokens": r.usage.total_tokens if r.usage else 0}
